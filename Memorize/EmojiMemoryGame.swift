@@ -11,16 +11,23 @@ class EmojiMemoryGame {
     private var model: MemoryGame<String> = EmojiMemoryGame.createMemoryGame()
     
     static func createMemoryGame() -> MemoryGame<String> {
-        let emojis = ["👻", "🎃", "🕷"]
-        return MemoryGame<String>(numberOfPairsOfCards: emojis.count) { pairIndex in
-            return emojis[pairIndex]
+        var emojis = ["👻", "🎃", "🕷", "💀", "🕯"]
+        var randomEmojis: [String] = []
+        for _ in 0...Int.random(in: 2..<5) {
+            let randomEmojiIndex = emojis.indices.randomElement()!
+            randomEmojis.append(emojis[randomEmojiIndex])
+            emojis.remove(at: randomEmojiIndex)
+        }
+        
+        return MemoryGame<String>(numberOfPairsOfCards: randomEmojis.count) { pairIndex in
+            return randomEmojis[pairIndex]
         }
     }
     
     // MARK: - Access to the Model
     
     var cards: Array<MemoryGame<String>.Card> {
-        model.cards
+        model.cards.shuffled()
     }
     
     // MARK: - Intent(s)
